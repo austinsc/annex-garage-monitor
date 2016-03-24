@@ -1,0 +1,24 @@
+{
+    "name": "paparazzo",
+    "author": "Rod Wilhelmy <rod@wilhel.me>",
+    "description": "A high performance web proxy for serving MJPG streams to the masses.",
+    "version": "0.5.1",
+    "main": "./src/paparazzo",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/rodowi/Paparazzo.js.git"
+    },
+    "keywords": [
+      "mjpg",
+      "proxy",
+      "parser"
+    ],
+    "dependencies": {
+        "coffee-script": "1.2.0",
+        "chai": "0.5.2",
+        "mocha": "1.0.1"
+    },
+    "engines": {
+      "node": "v0.6.5"
+    }
+}
