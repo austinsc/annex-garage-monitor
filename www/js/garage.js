@@ -27,8 +27,34 @@ function garageClick(obj) {
     },
     timeout: 30000
   });
-  
+
 }
+
+function lightsClick(obj) {
+  // Grey out icon and disable click - see css for .disabled
+  $(obj).addClass("disabled");
+
+  // Send signal to motor, wait for response from Arduino
+  $.ajax({
+    url: "/arduino/lights/",
+    dataType: 'json',
+    error: function() {
+      alert("Cannot reach garage monitor. Please try again.");
+      $(obj).removeClass("disabled");
+    },
+    success: function() {
+      $(obj).removeClass("disabled").addClass("running");
+
+      // After 10 seconds (motor finished running), re-enable icon
+      setTimeout(function() {
+        $(obj).removeClass("running");
+      }, 10000);
+    },
+    timeout: 30000
+  });
+
+}
+
 
 function setGarageStatus(label, val) {
   var selector = '#' + label;
@@ -43,22 +69,22 @@ function setGarageStatus(label, val) {
 }
 
 function refresh() {
-  
+
   $.get('/arduino/inputs/', function(json_response){
             for ( var i = 0; i < GARAGES; i++ ) {
               setGarageStatus("sensor" + i, json_response["sensor" + i]);
-            }  
+            }
 
             // IF JUST ONE GARAGE, REMOVE THE UPPER "FOR" LOOP AND UNCOMMENT BELOW
             // setGarageStatus("sensor0", json_response.sensor0);
           }
-        );  
-         
-} 
+        );
+
+}
 
 function saveScreenshot() {
   $(".button.special").toggleClass("disabled");
-  
+
   var timestamp = getFileNameTimestamp();
   $.get('/arduino/screenshot/' + timestamp, function(){
       $(".button.special").toggleClass("disabled");
@@ -114,8 +140,8 @@ function refreshScreenshot() {
   }, 2000);
 }
 
-interval = window.setInterval(refresh, 2000);  
-$(window).load(function() 
-  { 
+interval = window.setInterval(refresh, 2000);
+$(window).load(function()
+  {
     $('#last-updated').text(getTimestamp());
   });
